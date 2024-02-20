@@ -9,7 +9,7 @@ on:
         types: [opened, synchronize]
 
 jobs:
-    simple_deployment_pipeline:
+    test_pipeline:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v3
@@ -20,12 +20,22 @@ jobs:
               run: npm install
             - name: Code linting (with fix)
               run: npm run eslint -- --fix
-            - name: Build
-              run: npm run build
             - name: Run Tests
               run: npm run test
+
+    build_pipeline:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
+            - name: install dependencies
+              run: npm install
+            - name: Build
+              run: npm run build
     tag_release:
-        needs: [simple_deployment_pipeline]
+        needs: [test_pipeline, build_pipeline]
         runs-on: ubuntu-20.04
         steps:
             - name: Checkout code
