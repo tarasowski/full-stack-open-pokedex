@@ -16,8 +16,8 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: '16'
-           # - name: install dependencies
-           #   run: npm install
+            - name: install dependencies
+              run: npm install
             - name: Code linting (with fix)
               run: npm run eslint -- --fix
             - name: Build
